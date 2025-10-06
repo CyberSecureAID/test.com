@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Profesional - ExagTraderAcademy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ==================== Estilos Generales y Modo Oscuro ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 2px solid #2d2d44;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #9ca3af;
+            font-size: 1.1em;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ------------------ Botones de Acción Rápida ------------------ */
+        .quick-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .action-btn {
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-btn {
+            background: #2d2d44;
+            color: #00d4ff;
+            border: 2px solid #3d3d5c;
+        }
+
+        .menu-btn:hover {
+            background: #3d3d5c;
+            border-color: #00d4ff;
+        }
+
+        /* Estilo para el botón del temporizador activo */
+        .timer-active {
+            background: linear-gradient(135deg, #00ff88, #00d4ff); 
+            color: #0f0f1e; 
+            border: 2px solid #00ff88;
+        }
+
+        /* Estilo para el botón del temporizador inactivo */
+        .timer-inactive {
+            background: #2d2d44;
+            color: #00d4ff;
+            border: 2px solid #3d3d5c;
+        }
+
+
+        /* ==================== SELECCIÓN DE MODO (PORTADA) ==================== */
+        .mode-selection {
+            background: #1e1e30;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .mode-selection h2 {
+            color: #00ff88;
+            margin-bottom: 30px;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        /* CORRECCIÓN: Grid 2x2 para alinear el botón de Glosario */
+        .mode-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 25px;
+        }
+        
+        /* El botón de glosario debe ser del mismo tamaño que los otros (no span 2) */
+        .glossary-btn {
+            background: #3d3d5c; 
+            border-color: #00d4ff;
+        }
+
+        .mode-btn {
+            background: #151525; 
+            border: 1px solid #2d2d44;
+            padding: 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-5px);
+            border-color: #00ff88;
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.2);
+            background: #1a1a2e;
+        }
+
+        .mode-btn h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .mode-btn h3 i {
+            margin-right: 12px;
+            font-size: 1.2em;
+        }
+
+        .mode-btn p {
+            color: #9ca3af;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #2d2d44;
+        }
+
+        .mode-btn strong {
+            color: #e0e0e0;
+            font-weight: bold;
+        }
+
+        .mode-btn .difficulty {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .difficulty.easy { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .difficulty.medium { background: rgba(255, 165, 0, 0.2); color: #ffa500; }
+        .difficulty.hard { background: rgba(255, 0, 68, 0.2); color: #ff0044; }
+
+
+        /* ==================== Configuración de Apuesta ==================== */
+        .bet-setup {
+            background: #1e1e30;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .bet-setup h3 {
+            color: #00ff88;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .bet-input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0 30px;
+        }
+
+        .bet-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bet-input button {
+            background: #2d2d44;
+            color: #e0e0e0;
+            border: 2px solid #3d3d5c;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+        }
+        
+        .bet-input button.decrease-bet {
+             display: none; 
+        }
+        
+        .bet-input button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .bet-input input {
+            background: #0f0f1e;
+            color: #00ff88;
+            border: 2px solid #3d3d5c;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1.5em;
+            text-align: center;
+            width: 150px;
+            outline: none;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #0f0f1e;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+
+        /* ==================== Estadísticas y Progreso ==================== */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+            position: relative; 
+        }
+
+        .stat-card {
+            background: #1e1e30;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #2d2d44;
+        }
+
+        .stat-card .label { color: #9ca3af; font-size: 0.9em; margin-bottom: 8px; }
+        .stat-card .value { font-size: 2em; font-weight: bold; }
+        .stat-card.green .value { color: #00ff88; }
+        .stat-card.red .value { color: #ff0044; }
+        .stat-card.blue .value { color: #00d4ff; }
+        .stat-card.yellow .value { color: #ffd700; }
+
+        /* Progress Bar para las preguntas */
+        .progress-bar {
+            background: #0f0f1e;
+            height: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: 2px solid #2d2d44;
+        }
+
+        .progress-fill {
+            height: 100%; 
+            background: linear-gradient(90deg, #00ff88, #00d4ff); 
+            transition: width 0.5s ease; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold; 
+            color: #0f0f1e;
+        }
+        
+        /* Temporizador tipo barra (barra de tiempo agotándose) */
+        #timerBarContainer {
+            background: #1e1e30;
+            height: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 1px solid #ff0044;
+        }
+
+        #timerBar {
+            height: 100%; 
+            width: 100%; /* Inicia lleno */
+            background: linear-gradient(90deg, #ff9900, #ff0044); 
+            transition: width 1s linear; 
+        }
+
+        /* ==================== Quiz Card y Resultados ==================== */
+        .quiz-card { 
+            background: #1e1e30; 
+            border-radius: 15px; 
+            padding: 40px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+            margin-bottom: 30px; 
+        }
+        .question-number { color: #00d4ff; font-size: 1.1em; margin-bottom: 15px; font-weight: bold; }
+        .question-text { 
+            font-size: 1.4em; 
+            line-height: 1.6; 
+            margin-bottom: 30px; 
+            color: #e0e0e0;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2d2d44;
+        }
+        .answer-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .answer-btn { 
+            padding: 20px 30px; 
+            font-size: 1.3em; 
+            font-weight: bold; 
+            border: 3px solid; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            text-transform: uppercase; 
+        }
+        .answer-btn.true-btn { background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05)); border-color: #00ff88; color: #00ff88; }
+        .answer-btn.false-btn { background: linear-gradient(135deg, rgba(255, 0, 68, 0.1), rgba(255, 0, 68, 0.05)); border-color: #ff0044; color: #ff0044; }
+        .answer-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .feedback { 
+            margin-top: 25px; 
+            padding: 25px; 
+            border-radius: 12px; 
+            border-left: 5px solid; 
+        }
+        .feedback h4 {
+             color: #00ff88; 
+             margin-bottom: 10px;
+        }
+
+        .feedback.correct { background: rgba(0, 255, 136, 0.1); border-color: #00ff88; }
+        .feedback.incorrect { background: rgba(255, 0, 68, 0.1); border-color: #ff0044; }
+        .next-btn { background: linear-gradient(135deg, #00d4ff, #0099ff); color: #0f0f1e; border: none; padding: 15px 40px; border-radius: 8px; cursor: pointer; font-size: 1.1em; font-weight: bold; margin-top: 20px; transition: all 0.3s ease; }
+        .results { background: #1e1e30; border-radius: 15px; padding: 40px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .score-circle { width: 200px; height: 200px; border-radius: 50%; margin: 30px auto; display: flex; align-items: center; justify-content: center; font-size: 3em; font-weight: bold; border: 8px solid; position: relative; }
+        .score-circle.pass { border-color: #00ff88; color: #00ff88; background: rgba(0, 255, 136, 0.1); }
+        .score-circle.fail { border-color: #ff0044; color: #ff0044; background: rgba(255, 0, 68, 0.1); }
+        .result-message { font-size: 1.5em; margin: 20px 0; color: #e0e0e0; }
+        .result-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0; }
+        .result-title { 
+            font-size: 2.2em; 
+            color: #00d4ff; 
+            margin-bottom: 5px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+        }
+        .rank-title { 
+            font-size: 1.2em; 
+            color: #ffd700; 
+            margin-bottom: 25px;
+            font-weight: bold;
+            padding: 8px 15px;
+            background: #2d2d44;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        .result-actions {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .result-actions button {
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .restart-btn { background: linear-gradient(135deg, #00ff88, #00d4ff); color: #0f0f1e; }
+        .review-btn { background: #3d3d5c; color: #00d4ff; border: 2px solid #00d4ff; }
+        
+        /* Contenedor de Repaso de Errores */
+        .review-container {
+            margin-top: 40px;
+            text-align: left;
+            padding: 20px;
+            border: 2px dashed #ff0044; 
+            border-radius: 12px;
+        }
+        
+        .review-container h3 {
+            color: #ff0044;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+        
+        .review-item {
+            background: #151525;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 5px solid #ff0044;
+        }
+        
+        .review-item strong {
+            color: #00ff88;
+        }
+        
+        .review-question-text {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+        
+        .review-explanation {
+            font-size: 0.9em;
+            color: #9ca3af;
+            border-top: 1px dashed #2d2d44;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        /* ==================== GLOSARIO DE TÉRMINOS (CORREGIDO) ==================== */
+        .glossary-content {
+            background: #1e1e30;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+        }
+        
+        .glossary-content h2 {
+            color: #00d4ff;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            text-align: center;
+            border-bottom: 2px solid #00ff88; /* Pequeño cambio estético */
+            padding-bottom: 15px;
+            font-weight: 800;
+        }
+        
+        .glossary-item {
+            padding: 20px 0; /* Mayor espacio */
+            border-bottom: 1px solid #2d2d44; /* Línea más marcada */
+        }
+        
+        .glossary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .glossary-item h4 {
+            color: #00ff88;
+            font-size: 1.4em; /* Más grande y legible */
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+        
+        .glossary-item p {
+            color: #e0e0e0;
+            line-height: 1.7;
+            padding-left: 35px; /* Más indentación */
+        }
+        
+        .glossary-item p strong {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* ==================== PIE DE PÁGINA (CORREGIDO) ==================== */
+        .app-footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 2px solid #2d2d44;
+            color: #9ca3af;
+            font-size: 0.9em;
+        }
+        
+        .footer-links {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .footer-links a {
+            color: #00d4ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+        }
+
+        .footer-links a:hover {
+            color: #00ff88;
+        }
+
+        /* ==================== Media Queries (RESPONSIVE) ==================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px; 
+            }
+            .mode-buttons {
+                grid-template-columns: 1fr;
+            }
+            /* El botón de glosario se mantiene igual que los otros, pero en una columna si es móvil */
+            .glossary-btn {
+                grid-column: 1 / span 1; 
+            }
+            .result-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .result-actions button {
+                width: 100%;
+            }
+            .quiz-card {
+                padding: 20px;
+            }
+            .answer-buttons {
+                grid-template-columns: 1fr;
+            }
+            .answer-btn {
+                padding: 15px 20px;
+                font-size: 1.1em;
+            }
+            .quick-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .quick-actions button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <div id="confettiContainer" class="confetti-container"></div>
+        
+        <div class="header">
+            <h1>🚀 Test Profesional - ExagTraderAcademy</h1>
+            <p>Domina los conceptos clave del trading, riesgo y psicología del mercado.</p>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <h2>Selecciona tu Modo de Estudio</h2>
+            <div class="mode-buttons">
+                <div class="mode-btn" onclick="selectMode('beginner')">
+                    <h3><i class="fas fa-book-open"></i> Modo Principiante</h3>
+                    <p>Aprende sin presión ni tiempo límite. Cada pregunta correcta suma 1 punto. Necesitas <strong>60/100 (60%)</strong> para aprobar.</p>
+                    <span class="difficulty easy">FÁCIL / FORMATIVO</span>
+                </div>
+                <div class="mode-btn" onclick="selectMode('lives')">
+                    <h3><i class="fas fa-heart-pulse"></i> Modo con Vidas (40)</h3>
+                    <p>Enfoque en <strong>Gestión de Riesgo y Velocidad</strong>. Comienzas con <strong>40 vidas</strong>. Cada error o el agote del temporizador te cuesta una vida.</p>
+                    <span class="difficulty medium">INTERMEDIO / RIESGO</span>
+                </div>
+                <div class="mode-btn" onclick="selectMode('trading')">
+                    <h3><i class="fas fa-chart-line"></i> Modo Trader</h3>
+                    <p>Simula un balance de <strong>$1,000</strong>. Ganas o pierdes tu apuesta por respuesta. La velocidad y precisión afectan tu capital.</p>
+                    <span class="difficulty hard">AVANZADO / CAPITAL</span>
+                </div>
+                <div class="mode-btn glossary-btn" onclick="showGlossary()">
+                     <h3><i class="fas fa-brain"></i> Palabras Clave</h3>
+                     <p>Revisa todos los términos esenciales del trading, desde Apalancamiento hasta Stop Loss, con explicaciones sencillas y directas.</p>
+                     <span class="difficulty easy">TÉRMINOS ESENCIALES</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="glossarySection" class="glossary-content hidden">
+            <div class="quick-actions">
+                <button class="menu-btn action-btn" onclick="goToMenu()">
+                    <i class="fas fa-home"></i> Ir al Menú Inicial
+                </button>
+            </div>
+            <h2>📚 Palabras Clave</h2> 
+            <div id="glossaryList">
+                </div>
+        </div>
+        
+        <div id="betSetup" class="bet-setup hidden">
+            <h3>💵 Configura tu Apuesta y Capital</h3>
+            <p id="tradingBalanceDisplay" style="color: #00ff88; margin-bottom: 20px; font-weight: bold; font-size: 1.2em;">
+                Balance inicial: $1,000
+            </p>
+            <div class="bet-input-container">
+                <div class="bet-input">
+                    <input type="number" id="betAmount" value="10" readonly>
+                    <button onclick="changeBet(10)">+ $10</button>
+                </div>
+                <p style="color: #9ca3af; font-size: 0.9em;">Mínimo: $10 | Múltiplos de $10. La apuesta máxima es el 20% de tu balance total.</p>
+            </div>
+            <button class="start-btn" onclick="startQuiz()">Comenzar Trading 🚀</button>
+        </div>
+
+        <div id="quizContent" class="hidden">
+            <div class="quick-actions">
+                <button class="menu-btn action-btn" onclick="goToMenu()">
+                    <i class="fas fa-home"></i> Ir al Menú Inicial
+                </button>
+                <button id="timerToggleBtn" class="action-btn timer-inactive hidden" onclick="toggleTimer()">
+                    <i class="fas fa-clock"></i> Temporizador: DESACTIVADO
+                </button>
+            </div>
+
+            <div id="stats" class="stats">
+                <div class="stat-card blue">
+                    <div class="label">Pregunta</div>
+                    <div class="value" id="currentQuestion">1/100</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="label">Correctas</div>
+                    <div class="value" id="correctCount">0</div>
+                </div>
+                <div class="stat-card red">
+                    <div class="label">Incorrectas</div>
+                    <div class="value" id="incorrectCount">0</div>
+                </div>
+                <div class="stat-card yellow" id="specialStat">
+                    <div class="label" id="specialLabel">Balance/Vidas</div>
+                    <div class="value" id="specialValue">--</div>
+                </div>
+            </div>
+            
+            <div id="timerBarContainer" class="hidden">
+                <div id="timerBar"></div>
+            </div>
+
+
+            <div id="progressBar" class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+
+            <div id="quizCard" class="quiz-card">
+                <div class="question-number" id="questionNumber"></div>
+                <div class="question-text" id="questionText"></div>
+                
+                <div class="answer-buttons">
+                    <button class="answer-btn true-btn" data-answer="true" onclick="checkAnswer(true)">
+                        ✓ VERDADERO
+                    </button>
+                    <button class="answer-btn false-btn" data-answer="false" onclick="checkAnswer(false)">
+                        ✗ FALSO
+                    </button>
+                </div>
+                
+                <div id="feedback" class="hidden"></div>
+                
+                <button id="nextBtn" class="next-btn hidden" onclick="nextQuestion()">
+                    Siguiente Pregunta →
+                </button>
+            </div>
+        </div>
+
+        <div id="results" class="results hidden">
+            <h2 class="result-title" id="finalTitle">¡Prueba Finalizada!</h2>
+            <div class="rank-title" id="finalRank"></div>
+            
+            <div id="scoreCircle" class="score-circle">
+                <span id="finalScore">0%</span>
+            </div>
+            <div class="result-message" id="resultMessage"></div>
+            
+            <div class="result-stats">
+                <div class="stat-card green">
+                    <div class="label">Respuestas Correctas</div>
+                    <div class="value" id="finalCorrect">0</div>
+                </div>
+                <div class="stat-card red">
+                    <div class="label">Respuestas Incorrectas</div>
+                    <div class="value" id="finalIncorrect">0</div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="label">Precisión</div>
+                    <div class="value" id="finalAccuracy">0%</div>
+                </div>
+                </div>
+            
+            <div class="result-actions">
+                <button class="restart-btn" onclick="restartQuiz()">🔄 Reintentar Test</button>
+                <button class="review-btn hidden" id="reviewBtn" onclick="toggleReview()">
+                    <i class="fas fa-eye-slash"></i> Revisar Errores (0)
+                </button>
+            </div>
+            
+            <div id="reviewContainer" class="review-container hidden">
+                <h3><i class="fas fa-exclamation-triangle"></i> Repaso de Conceptos Fallidos</h3>
+            </div>
+            
+        </div>
+        
+        <footer id="appFooter" class="app-footer">
+            <p>© 2024 Desarrollado para ExagTraderAcademy. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="https://t.me/ExagTrader" target="_blank"><i class="fab fa-telegram-plane"></i> Comunidad</a>
+                <a href="https://t.me/ExagTraderCEO" target="_blank"><i class="fas fa-user-tie"></i> Desarrollador</a>
+                <a href="https://www.youtube.com/@JesusTraders" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ============================================
+        // SECCIÓN DE PREGUNTAS Y RESPUESTAS (100 PREGUNTAS ÚNICAS)
+        // (Contenido del Quiz NO MODIFICADO - Tu código es perfecto)
+        // ============================================
+        const allQuestions = [
+            // BLOQUE 1: CONCEPTOS FUNDAMENTALES Y VELAS (1-20)
+            { question: "Una vela verde (bullish) indica que el precio de cierre fue mayor que el precio de apertura.", answer: true, explanation: "Correcto. Las velas verdes o alcistas siempre indican que el precio subió. El cuerpo de la vela representa la diferencia clave entre la apertura (parte inferior) y el cierre (parte superior)." },
+            { question: "Un mercado 'Bear' (bajista) se caracteriza por un constante aumento de precios y optimismo generalizado.", answer: false, explanation: "Incorrecto. Un mercado Bear (oso) es bajista, caracterizado por la caída de precios y el pesimismo. El mercado Bull (toro) es el que tiene precios en alza." },
+            { question: "El Stop Loss es una orden que cierra automáticamente tu posición para asegurar ganancias en un precio objetivo.", answer: false, explanation: "Incorrecto. El Stop Loss se usa para limitar pérdidas saliendo de una posición cuando el precio va en tu contra. El Take Profit es la orden que asegura ganancias." },
+            { question: "El Ratio Riesgo/Recompensa 1:3 significa que arriesgas $100 para buscar una ganancia de $300.", answer: true, explanation: "Correcto. Este ratio es la base de la gestión de riesgo. Arriesgar 1 unidad para ganar 3 (1:3) es un estándar muy rentable, ya que te permite ser rentable incluso con menos del 50% de aciertos." },
+            { question: "La alta volatilidad en un activo reduce el riesgo de trading, ya que los movimientos son más suaves.", answer: false, explanation: "Incorrecto. La volatilidad alta significa que el precio cambia rápida y drásticamente. Esto aumenta el riesgo de forma significativa, pero también las oportunidades de ganancia." },
+            { question: "Una resistencia es un nivel de precio donde la presión de compra supera consistentemente la presión de venta.", answer: false, explanation: "Incorrecto. Una resistencia es un 'techo' donde la presión vendedora supera a la compradora, deteniendo o revirtiendo el precio. El soporte es donde los compradores superan a los vendedores." },
+            { question: "Un soporte es un nivel donde históricamente los compradores han estado dispuestos a absorber toda la oferta vendedora.", answer: true, explanation: "Correcto. El soporte actúa como un 'piso'. Es un nivel donde la demanda es lo suficientemente fuerte para detener la caída del precio y provocar un rebote al alza." },
+            { question: "La orden 'Market' (a mercado) garantiza la ejecución instantánea pero no el precio exacto que viste.", answer: true, explanation: "Correcto. La orden a mercado se ejecuta inmediatamente al mejor precio disponible, lo que en mercados volátiles puede generar deslizamiento (slippage) y un precio diferente al que esperabas." },
+            { question: "Una orden 'Limit' te permite especificar el precio exacto, pero no garantiza que la orden se ejecute.", answer: true, explanation: "Correcto. Una orden Limit solo se ejecuta si el mercado toca o cruza el precio que fijaste. Si el precio se mueve en otra dirección sin alcanzar tu límite, la orden caduca." },
+            { question: "El Análisis Técnico se basa en la historia de los precios y el volumen para predecir movimientos futuros.", answer: true, explanation: "Correcto. El Análisis Técnico se enfoca en el estudio de gráficos, patrones, tendencias e indicadores, bajo la premisa de que 'la historia se repite' y el precio lo descuenta todo." },
+            { question: "FOMO (Fear Of Missing Out) es un sesgo psicológico que lleva a entrar tarde en un movimiento alcista.", answer: true, explanation: "Correcto. El FOMO es una trampa emocional. El miedo a quedarse fuera de una gran subida lleva a los traders a comprar en picos de euforia, justo antes de una corrección." },
+            { question: "El apalancamiento (leverage) siempre es seguro si se usa con un riesgo por operación inferior al 1% del capital.", answer: false, explanation: "Incorrecto. El apalancamiento nunca es intrínsecamente 'seguro', solo magnifica resultados. Aunque uses una buena gestión de riesgo (1%), el apalancamiento siempre aumenta el riesgo de liquidación de la posición si el movimiento es brusco." },
+            { question: "Un mercado lateral (rango) ocurre cuando el precio se mueve entre un soporte y una resistencia claros sin romper ninguno.", answer: true, explanation: "Correcto. La consolidación o rango es un periodo de indecisión. El precio rebota entre un techo y un piso, y el trader espera la ruptura de uno de los dos para tomar una posición direccional." },
+            { question: "El volumen es el indicador más importante, ya que valida la fuerza o debilidad detrás de un movimiento de precio.", answer: true, explanation: "Correcto. El volumen es la 'gasolina' del mercado. Un movimiento (al alza o a la baja) con volumen bajo se considera débil, mientras que un movimiento con alto volumen es significativo y más probable que continúe." },
+            { question: "El cuerpo de una vela es la línea delgada que sobresale y representa el máximo y mínimo del período.", answer: false, explanation: "Incorrecto. El cuerpo es la parte ancha que indica la apertura y el cierre. Las líneas delgadas se llaman mechas (shadows) y representan el rango de precios total (máximo/mínimo) del período." },
+            { question: "Una vela Pin Bar (Martillo o Hombre Colgado) con una mecha inferior larga y cuerpo pequeño es una señal de rechazo alcista.", answer: false, explanation: "Incorrecto. Una Pin Bar con una mecha inferior larga y cuerpo pequeño en un soporte es una señal de rechazo bajista, indicando que los compradores tomaron el control y que el precio podría subir (Martillo)." },
+            { question: "El RSI (Relative Strength Index) te ayuda a medir si un activo se ha movido demasiado rápido, estando sobrecomprado o sobrevendido.", answer: true, explanation: "Correcto. El RSI mide la velocidad y el cambio de los movimientos de precio. Por encima de 70 es sobrecomprado (posible venta); por debajo de 30 es sobrevendido (posible compra)." },
+            { question: "La línea de tendencia alcista se dibuja conectando los mínimos más bajos de la acción del precio.", answer: false, explanation: "Incorrecto. Una línea de tendencia alcista se dibuja conectando los mínimos más altos (Higher Lows). Una línea de tendencia bajista conecta los máximos más bajos." },
+            { question: "La Teoría de Dow establece que una tendencia alcista se confirma con máximos y mínimos cada vez más altos.", answer: true, explanation: "Correcto. La estructura de mercado más básica: una tendencia alcista requiere una secuencia constante de Máximos más Altos (Higher Highs) y Mínimos más Altos (Higher Lows)." },
+            { question: "Un mercado de alta liquidez facilita la compra y venta de grandes cantidades sin generar grandes movimientos de precio.", answer: true, explanation: "Correcto. La liquidez es esencial. Un mercado líquido (como Bitcoin/USD) tiene suficientes compradores y vendedores para absorber órdenes grandes sin que el precio se dispare o se desplome por la ejecución." },
+
+            // BLOQUE 2: ESTRUCTURA, INDICADORES Y PSICOLOGÍA BÁSICA (21-40)
+            { question: "El Backtesting es el proceso de probar una estrategia en datos históricos para medir su rendimiento pasado.", answer: true, explanation: "Correcto. El Backtesting es fundamental. Si una estrategia no es rentable en el pasado, no deberías usarla en el futuro. Te permite cuantificar la expectativa matemática de tu sistema de riesgo." },
+            { question: "Una Media Móvil Exponencial (EMA) reacciona más lento a los cambios recientes del precio que una Media Móvil Simple (SMA).", answer: false, explanation: "Incorrecto. La EMA (Exponencial) da más peso a los datos de precios más recientes, lo que la hace reaccionar más rápido y ser más sensible a los giros recientes del mercado que la SMA (Simple)." },
+            { question: "Un 'Drawdown' es la ganancia máxima que ha alcanzado tu cuenta de trading.", answer: false, explanation: "Incorrecto. El Drawdown es la pérdida máxima (en porcentaje) que sufre una cuenta desde su punto más alto (pico) hasta su punto más bajo (valle). Es la métrica clave para medir la salud de tu sistema de riesgo." },
+            { question: "El patrón de Doble Techo (Double Top) es una señal de reversión alcista después de un movimiento bajista.", answer: false, explanation: "Incorrecto. El Doble Techo es un patrón de reversión bajista. Se forma en un techo de mercado y señala que la fuerza compradora fracasó dos veces en superar una resistencia." },
+            { question: "Una bandera (Flag) es típicamente un patrón de continuación, que indica una pausa antes de reanudar la tendencia previa.", answer: true, explanation: "Correcto. Las banderas y banderines son patrones de continuación. Son periodos cortos de consolidación que se mueven en dirección opuesta a la tendencia, y suelen romperse para seguir la tendencia original." },
+            { question: "La 'línea de cuello' (neckline) en el patrón de Cabeza y Hombros es el nivel de soporte que, al romperse, confirma la reversión bajista.", answer: true, explanation: "Correcto. La Línea de Cuello conecta los mínimos de los dos hombros y es el punto de no retorno. Su ruptura con volumen es la confirmación de que la tendencia alcista ha terminado." },
+            { question: "Una divergencia bajista con el RSI ocurre cuando el precio hace un máximo más alto, pero el RSI no lo logra.", answer: true, explanation: "Correcto. Esta es una advertencia. Indica que el precio está subiendo, pero el impulso subyacente (momentum) se está agotando. A menudo precede a una corrección o reversión importante." },
+            { question: "El Market Maker (Creador de Mercado) es una entidad que manipula el precio para su propio beneficio y no es esencial para el mercado.", answer: false, explanation: "Incorrecto. El Market Maker es una entidad esencial cuya función es proporcionar liquidez al mercado, comprando y vendiendo constantemente. Esto asegura que otros traders puedan ejecutar sus órdenes de forma eficiente." },
+            { question: "El sobreapalancamiento es una de las causas más comunes de liquidación de cuentas de traders novatos.", answer: true, explanation: "Correcto. Usar apalancamiento excesivo (ej. 50x o 100x) significa que un pequeño movimiento en contra puede llevar la cuenta a 0. Es un error de gestión de riesgo fatal." },
+            { question: "La Gestión de Riesgo te dice cuánto capital arriesgar en el total de tu cartera, no por operación individual.", answer: false, explanation: "Incorrecto. La Gestión de Riesgo se enfoca principalmente en el riesgo por operación, generalmente recomendado entre 1% y 2% del capital total. La Gestión de Capital es la que se enfoca en la asignación de la cartera completa." },
+            { question: "Un Triángulo Simétrico es generalmente un patrón de indecisión que puede romper en cualquier dirección.", answer: true, explanation: "Correcto. El Triángulo Simétrico muestra que los compradores y vendedores están en equilibrio, con máximos descendentes y mínimos ascendentes. Se considera de continuación, pero se espera la ruptura para confirmar la dirección." },
+            { question: "La regla de 'Take Your Profit' (Tomar Ganancias) es una señal de debilidad en la psicología del trader y debe evitarse.", answer: false, explanation: "Incorrecto. Tomar ganancias de forma parcial o total es un principio de disciplina y gestión de riesgo. Asegurar beneficios de forma metódica es la única forma de que un sistema sea rentable a largo plazo." },
+            { question: "El trading en papel (Paper Trading) significa operar con dinero real pero con una estrategia nueva y arriesgada.", answer: false, explanation: "Incorrecto. El Paper Trading o Demo Trading es la simulación de operaciones sin usar dinero real. Es la forma ideal de probar una estrategia o bróker sin riesgo." },
+            { question: "El precio se mueve en una línea recta de tendencia el 70% del tiempo.", answer: false, explanation: "Incorrecto. El precio pasa la mayor parte del tiempo (alrededor del 70% al 80%) en consolidación (movimiento lateral o rango), y solo una minoría del tiempo en tendencias claras y fuertes." },
+            { question: "El concepto de 'Bull Trap' (Trampa de Toros) es un falso rompimiento de soporte que precede a una fuerte caída.", answer: false, explanation: "Incorrecto. La Bull Trap es un falso rompimiento de resistencia que atrapa a los compradores. La trampa de osos (Bear Trap) es el falso rompimiento de soporte." },
+            { question: "El 'Overtrading' (operar en exceso) generalmente lleva a un aumento de la rentabilidad a largo plazo.", answer: false, explanation: "Incorrecto. El Overtrading es un error psicológico impulsado por la emoción, el aburrimiento o la venganza (vengar pérdidas), y casi siempre resulta en pérdidas excesivas y falta de disciplina." },
+            { question: "El 'sesgo de confirmación' hace que el trader solo busque información que apoye su posición abierta.", answer: true, explanation: "Correcto. Este sesgo psicológico es peligroso. Si estás en una compra, ignoras las noticias o análisis que sugieren una venta, lo que te impide salir a tiempo cuando el precio va en tu contra." },
+            { question: "La correlación positiva entre dos activos significa que se mueven en la misma dirección general.", answer: true, explanation: "Correcto. Cuando el Dólar y el S&P 500 suben a la vez, tienen correlación positiva. La correlación se mide en una escala de +1 (perfectamente positivo) a -1 (perfectamente negativo)." },
+            { question: "La disciplina y la paciencia son más importantes para un trader que el conocimiento técnico de los indicadores.", answer: true, explanation: "Correcto. Muchos traders con excelente conocimiento técnico fallan por falta de disciplina y mala gestión emocional. El trading es 80% psicología y gestión de riesgo, 20% técnica." },
+            { question: "El trading algorítmico utiliza bots para ejecutar operaciones automáticamente, eliminando la emoción humana.", answer: true, explanation: "Correcto. El Algo Trading se basa en reglas predefinidas y elimina el componente emocional. Puede ejecutar operaciones a velocidades y volúmenes imposibles para un trader manual." },
+            
+            // BLOQUE 3: ANÁLISIS TÉCNICO AVANZADO Y GESTIÓN DE RIESGO (41-60)
+            { question: "El retesteo de una antigua resistencia después de ser rota la convierte en un nuevo nivel de soporte.", answer: true, explanation: "Correcto. Este es el principio de Cambio de Polaridad. Cuando el precio rompe un techo (resistencia) y regresa a tocarlo, ese nivel roto suele actuar ahora como un piso (soporte) para reanudar la subida." },
+            { question: "Cuando un activo está por debajo de su Media Móvil de 200 períodos (MA200), se considera generalmente una señal alcista a largo plazo.", answer: false, explanation: "Incorrecto. La MA200 es el filtro de tendencia a largo plazo. Si el precio está por debajo, la tendencia es considerada bajista o débil. Debe estar por encima para ser alcista." },
+            { question: "El concepto de 'Order Block' se refiere a la última vela de alta liquidez que precede un movimiento direccional fuerte e institucional.", answer: true, explanation: "Correcto. Los Order Blocks son zonas de interés (O.I.) donde se cree que los grandes jugadores dejaron órdenes pendientes. El precio suele regresar a estas zonas para completarlas antes de continuar." },
+            { question: "Una línea de tendencia se vuelve más fiable y fuerte cuantos menos veces haya sido tocada por el precio.", answer: false, explanation: "Incorrecto. Una línea de tendencia es más fuerte cuantas más veces haya sido tocada y rechazada por el precio, confirmando que es un nivel respetado por el mercado." },
+            { question: "El Take Profit de un trader debe ser siempre dos veces mayor que la distancia de su Stop Loss (1:2).", answer: false, explanation: "Incorrecto. El ratio 1:2 es una buena base, pero no es una regla estricta. Hay estrategias rentables con 1:1. Lo importante es que tu ratio combinado con tu porcentaje de acierto tenga una Expectativa Matemática positiva." },
+            { question: "El patrón de cuña ascendente (Rising Wedge) es un patrón de continuación alcista.", answer: false, explanation: "Incorrecto. La cuña ascendente es un patrón de reversión bajista. Muestra agotamiento de los compradores a medida que los máximos y mínimos convergentes se estrechan antes de una ruptura a la baja." },
+            { question: "En el Scalping, el objetivo es obtener grandes ganancias en operaciones que duran horas o días.", answer: false, explanation: "Incorrecto. El Scalping busca pequeñas ganancias repetitivas en operaciones que duran solo minutos o segundos, aprovechando micro-movimientos." },
+            { question: "El análisis de marcos de tiempo múltiples (Multi-Timeframe Analysis) consiste en alinear la tendencia grande con la entrada pequeña.", answer: true, explanation: "Correcto. Esto es la alineación. Se analiza la tendencia en un gráfico grande (ej. 4H) para asegurar que la entrada en un gráfico pequeño (ej. 5M) va a favor de la dirección principal." },
+            { question: "El indicador MACD se utiliza principalmente para confirmar la fuerza del volumen.", answer: false, explanation: "Incorrecto. El MACD (Moving Average Convergence Divergence) es un indicador de momentum y tendencia. Utiliza la diferencia entre dos medias móviles; no mide el volumen directamente." },
+            { question: "La liquidación forzosa (liquidation) en el trading apalancado ocurre cuando tu capital de margen cae a cero.", answer: true, explanation: "Correcto. La liquidación ocurre cuando las pérdidas de la posición han consumido todo el capital que usaste como garantía (margen), y el bróker cierra automáticamente la posición para protegerse de un balance negativo." },
+            { question: "Un 'Golden Cross' (Cruce Dorado) es una señal alcista donde la MA50 cruza por encima de la MA200.", answer: true, explanation: "Correcto. Este cruce es un indicador de fuerza alcista a largo plazo. Señala que la tendencia a corto plazo ha superado la tendencia de largo plazo, a menudo marcando el inicio de un mercado Bull." },
+            { question: "Un 'Death Cross' (Cruce de la Muerte) es una señal bajista donde la MA50 cruza por debajo de la MA200.", answer: true, explanation: "Correcto. Es el opuesto al Golden Cross. Indica que la tendencia a corto plazo se ha vuelto débil frente a la tendencia a largo plazo, anticipando una posible caída o mercado Bear." },
+            { question: "La Price Action (Acción del Precio) es la técnica de trading que se enfoca solo en el estudio de velas y estructura, sin indicadores.", answer: true, explanation: "Correcto. Los traders de Price Action creen que el precio en sí mismo lo es todo y que los patrones de velas y los niveles de S/R son suficientes para tomar decisiones, usando gráficos 'limpios'." },
+            { question: "La Aversión a la Pérdida es un sesgo psicológico que hace que los traders cierren las ganancias demasiado pronto.", answer: true, explanation: "Correcto. La aversión a la pérdida es la tendencia a sentir el dolor de una pérdida con más intensidad que la alegría de una ganancia. Esto lleva a los traders a cortar ganancias rápidamente (por miedo a que se esfumen) y dejar correr las pérdidas (con la esperanza de que el precio se revierta)." },
+            { question: "El concepto de 'Break of Structure' (BOS) en la Teoría de Dow indica la confirmación de un cambio de tendencia.", answer: true, explanation: "Correcto. El BOS ocurre cuando un mínimo o máximo anterior es roto, rompiendo la secuencia de Higher Highs/Higher Lows (alcista) o Lower Lows/Lower Highs (bajista), confirmando un cambio estructural." },
+            { question: "Un activo con baja capitalización de mercado (Low Cap) es generalmente menos volátil y más seguro que uno de alta capitalización.", answer: false, explanation: "Incorrecto. Los activos de baja capitalización son mucho más volátiles y susceptibles a la manipulación (Pump and Dump) debido a su baja liquidez y pequeño tamaño de mercado." },
+            { question: "El Índice de Miedo y Codicia (Fear & Greed Index) es una herramienta de análisis técnico para medir la euforia del mercado.", answer: false, explanation: "Incorrecto. El Índice de Miedo y Codicia es una herramienta de Análisis de Sentimiento (psicología), no técnico. Mide la emoción general del mercado basándose en datos de volatilidad, encuestas, volumen y redes sociales." },
+            { question: "Una vela envolvente bajista (Bearish Engulfing) que envuelve completamente la vela alcista anterior es una señal fuerte de reversión.", answer: true, explanation: "Correcto. Este patrón ocurre en un pico y muestra que, en el período actual, los vendedores no solo detuvieron a los compradores, sino que tomaron el control total, anulando todo el progreso de la vela anterior." },
+            { question: "El Dollar-Cost Averaging (DCA) es una estrategia de inversión que busca comprar solo en los puntos más bajos del precio.", answer: false, explanation: "Incorrecto. El DCA (Promedio de Costo en Dólares) es una estrategia de inversión a largo plazo que consiste en invertir una cantidad fija de dinero de forma regular, sin importar el precio, para reducir el riesgo de comprar en un pico." },
+            { question: "El Market Cap (Capitalización de Mercado) de una criptomoneda se calcula multiplicando su precio actual por su suministro circulante.", answer: true, explanation: "Correcto. La Capitalización de Mercado = Precio x Suministro Circulante. Es la métrica clave para medir el tamaño total y el valor de mercado de un activo." },
+
+            // BLOQUE 4: RIESGO, MARCO DE TIEMPO Y FRACTALIDAD (61-80)
+            { question: "El riesgo máximo por operación recomendado para una cuenta profesional es del 5% al 10% del capital.", answer: false, explanation: "Incorrecto. El riesgo máximo por operación universalmente recomendado por los profesionales es del 1% al 2% del capital total. Arriesgar más del 2% pone en peligro la supervivencia de la cuenta." },
+            { question: "La fractalidad en el trading significa que los patrones y la estructura del precio se repiten en todos los marcos de tiempo.", answer: true, explanation: "Correcto. La fractalidad implica que lo que ves en un gráfico de 5 minutos (ej. un Cabeza y Hombros) se parece a lo que ves en un gráfico diario. Esta repetición estructural es clave para el análisis técnico." },
+            { question: "Una línea de soporte o resistencia es más fuerte cuanto más largo es el marco de tiempo en el que se dibuja.", answer: true, explanation: "Correcto. Un nivel de soporte/resistencia dibujado en un gráfico semanal o diario es mucho más importante y fuerte que uno dibujado en un gráfico de 5 minutos, ya que representa un consenso de mercado más amplio y duradero." },
+            { question: "La regla del 'Stop y Reversa' (Stop and Reverse) sugiere que debes mover tu Stop Loss al punto de equilibrio (BE) tan pronto como entres en la operación.", answer: false, explanation: "Incorrecto. La regla del Stop and Reverse (SAR) es un sistema que invierte automáticamente tu posición (de compra a venta, o viceversa) cuando se rompe tu Stop Loss. Mover el Stop al punto de equilibrio es la regla de 'Break Even'." },
+            { question: "El concepto de 'Time-In-Market' (tiempo en el mercado) es más relevante para los Day Traders que para los inversores a largo plazo.", answer: false, explanation: "Incorrecto. 'Time-In-Market' (mantenerse invertido) es el mantra de los inversores a largo plazo (estrategia de HODL/DCA). Los Day Traders se enfocan en el *Market Timing* (el momento preciso de entrada y salida)." },
+            { question: "El riesgo de un activo se mide con una métrica llamada Beta, que compara su volatilidad con la del mercado general (S&P 500).", answer: true, explanation: "Correcto. El coeficiente Beta mide la sensibilidad de un activo a los movimientos del mercado general. Un Beta de 1.5 significa que, si el mercado sube 1%, ese activo tiende a subir 1.5%." },
+            { question: "Una consolidación estrecha y prolongada (rango) en un activo precede a un movimiento de bajo volumen y bajo riesgo.", answer: false, explanation: "Incorrecto. Una consolidación estrecha y prolongada (a menudo llamada 'squeeze') está acumulando energía. Frecuentemente precede a una ruptura explosiva con alto volumen y alta volatilidad/riesgo." },
+            { question: "El Capital Management (Gestión de Capital) establece que nunca debes comprometer más del 50% de tu cuenta a un solo activo.", answer: false, explanation: "Incorrecto. Aunque la diversificación es clave, la regla de Gestión de Capital más estricta sugeriría nunca más del 10% al 20% en un solo activo de riesgo como una criptomoneda para un trader típico." },
+            { question: "El patrón de Doble Fondo (Double Bottom) es una señal de reversión alcista que se confirma con la ruptura de la línea de cuello.", answer: true, explanation: "Correcto. El Doble Fondo se forma después de una tendencia bajista. Muestra el fallo de los vendedores en hacer nuevos mínimos, y la ruptura de la resistencia central (línea de cuello) confirma la reversión alcista." },
+            { question: "La Stop Hunting (Caza de Stops) es la práctica institucional de mover el precio para liquidar a traders minoristas antes de iniciar el movimiento real.", answer: true, explanation: "Correcto. La Caza de Stops ocurre cuando el precio se mueve justo por encima de una resistencia o por debajo de un soporte (donde están la mayoría de los Stops) para activar las órdenes de Stop Loss y liquidar a los minoristas, recolectando liquidez antes de revertirse." },
+            { question: "Un Pullback es un movimiento rápido y directo que rompe un nivel de soporte o resistencia.", answer: false, explanation: "Incorrecto. Un Pullback (o Retest) es un retroceso temporal que toca o prueba un nivel de soporte o resistencia previamente roto antes de continuar la tendencia en la dirección del rompimiento." },
+            { question: "La 'regla de la confirmación' en un rompimiento significa esperar que el precio cierre la vela por encima del nivel roto antes de entrar.", answer: true, explanation: "Correcto. Esto reduce el riesgo de Falsos Rompimientos (Bull/Bear Traps). Esperar el cierre de la vela (idealmente la vela de un marco de tiempo mayor) por encima del nivel es la confirmación." },
+            { question: "Un Supply Zone (Zona de Suministro) es esencialmente el mismo concepto que una Resistencia fuerte en el análisis técnico.", answer: true, explanation: "Correcto. La Zona de Suministro se refiere a un área donde la oferta (vendedores) es alta, causando que el precio se detenga y caiga. En esencia, es una forma más moderna de referirse a una resistencia." },
+            { question: "El Range Trading (Trading en Rango) es una estrategia que solo funciona en mercados con tendencia clara.", answer: false, explanation: "Incorrecto. El Range Trading es una estrategia específica para mercados laterales o consolidados. Consiste en comprar en el soporte (piso) y vender en la resistencia (techo) hasta que se produzca una ruptura." },
+            { question: "Las bandas de Bollinger se ensanchan cuando la volatilidad del mercado disminuye.", answer: false, explanation: "Incorrecto. Las Bandas de Bollinger se estrechan (squeeze) cuando la volatilidad es baja y se ensanchan cuando la volatilidad aumenta, indicando grandes movimientos." },
+            { question: "Un trader que opera con un Ratio de Riesgo/Recompensa 1:1 necesita un porcentaje de acierto superior al 50% para ser rentable.", answer: true, explanation: "Correcto. Si el riesgo y la recompensa son iguales (1:1), necesitas ganar más de la mitad de tus operaciones (50%) solo para cubrir los costos. Para ser rentable, necesitas una tasa de acierto superior al 50%." },
+            { question: "El Pump and Dump (Inflar y Deshacer) es un esquema de manipulación que infla artificialmente el precio con propaganda falsa.", answer: true, explanation: "Correcto. Es una práctica ilegal. Los manipuladores compran, promocionan la moneda para que otros compren (pump), y luego venden sus grandes cantidades a los precios inflados (dump), dejando a los últimos compradores con pérdidas." },
+            { question: "El slippage (deslizamiento) solo ocurre cuando cierras una posición y nunca cuando la abres.", answer: false, explanation: "Incorrecto. El deslizamiento puede ocurrir tanto al abrir una posición (orden Market) como al cerrar una posición (Stop Loss o Take Profit) si el mercado es muy volátil o tiene baja liquidez, haciendo que el precio 'salte'." },
+            { question: "La psicología del swing trading requiere paciencia para mantener operaciones abiertas durante días o semanas.", answer: true, explanation: "Correcto. El Swing Trading requiere paciencia para dejar que las operaciones alcancen su objetivo durante días o incluso semanas, ignorando el 'ruido' de los marcos de tiempo pequeños." },
+            { question: "La línea base (MA20) de las Bandas de Bollinger es un soporte o resistencia dinámico.", answer: true, explanation: "Correcto. La línea media de las Bandas de Bollinger (típicamente una MA20) a menudo actúa como un punto donde el precio hace un Pullback antes de reanudar la tendencia o como un punto de inflexión." },
+
+            // BLOQUE 5: MACRO Y TÉRMINOS PROFESIONALES (81-100)
+            { question: "La 'Dominancia de Bitcoin' (BTCD) mide la capitalización total del mercado de criptomonedas, excluyendo las altcoins.", answer: false, explanation: "Incorrecto. La Dominancia de Bitcoin mide el porcentaje de la capitalización total del mercado que le pertenece a Bitcoin. Se usa para medir el apetito de riesgo hacia las altcoins." },
+            { question: "La 'media móvil de 8 periodos' es la más usada por los Scalpers para identificar tendencia ultracorta y entradas rápidas.", answer: true, explanation: "Correcto. Los Scalpers y Day Traders utilizan medias móviles rápidas (como la MA8, MA9 o MA10) para identificar la tendencia inmediata y puntos de entrada de alta probabilidad en marcos de tiempo pequeños." },
+            { question: "El Open Interest (Interés Abierto) en futuros es el número total de contratos que han sido cerrados.", answer: false, explanation: "Incorrecto. El Open Interest es el número total de contratos que aún están abiertos o activos en el mercado. Es un indicador de liquidez y de la participación general de los traders." },
+            { question: "El Índice de Precios al Consumidor (CPI) es un dato económico que mide el crecimiento del empleo en la economía.", answer: false, explanation: "Incorrecto. El CPI mide la inflación (el aumento de precios al consumidor). El crecimiento del empleo es medido por datos como las Nóminas no Agrícolas (NFP) o la Tasa de Desempleo." },
+            { question: "Un 'contrato perpetuo' (Perpetual Swap) en futuros es aquel que tiene una fecha de vencimiento fija.", answer: false, explanation: "Incorrecto. Un contrato perpetuo es un contrato de futuros que no tiene fecha de vencimiento. Está diseñado para imitar al mercado spot (al contado) y se mantiene abierto hasta que el trader lo cierre manualmente o sea liquidado." },
+            { question: "El concepto de 'Valor Intrínseco' de un activo es clave para el análisis técnico.", answer: false, explanation: "Incorrecto. El Valor Intrínseco (el valor real o justo de un activo) es el foco del Análisis Fundamental. El análisis técnico ignora este valor y solo se centra en el precio actual." },
+            { question: "El trading en cuadrículas (Grid Trading) es una estrategia de inversión pasiva que funciona mejor en mercados laterales o con rango.", answer: true, explanation: "Correcto. El Grid Trading coloca órdenes de compra y venta escalonadas por encima y por debajo de un precio de referencia. Genera ganancias capturando los pequeños movimientos en un mercado lateral (rango) o consolidado." },
+            { question: "La trampa de osos (Bear Trap) es un falso rompimiento de soporte que atrapa a los vendedores antes de una subida violenta.", answer: true, explanation: "Correcto. La Bear Trap ocurre cuando el precio cae por debajo de un soporte (atrayendo a vendedores cortos), solo para revertirse rápidamente al alza, dejando a los vendedores atrapados en la posición." },
+            { question: "Una 'zona de demanda' es un área en el gráfico donde la presión de compra ha sido históricamente fuerte.", answer: true, explanation: "Correcto. La zona de demanda es esencialmente un Soporte fuerte o un área de Order Block alcista donde se espera que los grandes compradores entren al mercado para impulsar el precio al alza." },
+            { question: "El Funding Rate (Tasa de Financiamiento) en futuros perpetuos es un pago entre los traders que equilibra el precio del futuro con el precio spot.", answer: true, explanation: "Correcto. Si el Funding Rate es positivo, los largos (compradores) pagan a los cortos (vendedores) para desincentivar un sobrecalentamiento alcista. Si es negativo, los cortos pagan a los largos." },
+            { question: "La regla de oro del trading es que si la operación es buena, no importa si arriesgas el 20% de tu cuenta.", answer: false, explanation: "Incorrecto. NUNCA arriesgues más del 2% del capital total. No existe ninguna operación tan 'buena' que justifique violar la gestión de riesgo, sin importar la probabilidad de acierto." },
+            { question: "Un Stop Loss Mental es más seguro y recomendable que un Stop Loss colocado directamente en el exchange.", answer: false, explanation: "Incorrecto. Un Stop Loss mental no es seguro. El precio puede saltar (slippage) o la emoción puede hacer que no lo ejecutes. Siempre debes usar un Stop Loss físico en el exchange." },
+            { question: "La 'regla del 50%' en el análisis técnico sugiere que una corrección de tendencia a menudo llega al 50% del movimiento anterior.", answer: true, explanation: "Correcto. El retroceso al 50% de Fibonacci (que no es un nivel de Fibonacci per se, sino un punto medio) es un nivel psicológico y común para que se detenga un retroceso antes de que continúe la tendencia principal." },
+            { question: "La divergencia alcista con el RSI ocurre cuando el precio hace un mínimo más bajo, pero el RSI hace un mínimo más alto.", answer: true, explanation: "Correcto. Es una señal de reversión alcista. Indica que, aunque el precio sigue cayendo, la presión de venta se está reduciendo (momentum) y un rebote es inminente." },
+            { question: "El Pump and Dump solo puede ocurrir en altcoins y nunca en activos de alta capitalización como Bitcoin.", answer: false, explanation: "Incorrecto. Aunque es más fácil en altcoins, la manipulación de precios (o grandes movimientos institucionales) puede ocurrir en cualquier activo, incluso en Bitcoin, especialmente en marcos de tiempo pequeños." },
+            { question: "Un trader que se enfoca en el gráfico diario (1D) se clasifica como un Day Trader.", answer: false, explanation: "Incorrecto. Un trader que usa el gráfico diario como marco de tiempo principal se clasifica como un Swing Trader o un Inversor a largo plazo. El Day Trader opera en gráficos de minutos (1M, 5M, 15M)." },
+            { question: "La línea de tendencia de un gráfico es un nivel estático que no cambia una vez dibujado.", answer: false, explanation: "Incorrecto. Las líneas de tendencia son dinámicas y deben ajustarse si el precio las rompe y se forma un nuevo mínimo/máximo, o si un punto inicial es invalidado." },
+            { question: "El 'Capital de Riesgo' es el dinero que puedes permitirte perder sin que afecte tu vida financiera o tus gastos esenciales.", answer: true, explanation: "Correcto. Este es el único dinero que debe usarse para el trading. Si necesitas el dinero para vivir, no es capital de riesgo." },
+            { question: "La gestión de capital debe priorizar la protección del capital sobre la búsqueda de grandes ganancias.", answer: true, explanation: "Correcto. El primer y más importante trabajo de un trader es proteger su capital. Solo el capital protegido puede seguir operando y generar ganancias a largo plazo." },
+            { question: "El concepto de 'RSI oculto' se refiere a una confirmación de que la tendencia existente va a continuar.", answer: true, explanation: "Correcto. Las divergencias ocultas (diferentes a las divergencias regulares de reversión) son señales de continuación de la tendencia. Por ejemplo, la tendencia es alcista, y el precio hace un mínimo más alto, pero el RSI hace un mínimo más bajo, confirmando la fuerza oculta de la tendencia." },
+        ];
+
+        // ============================================
+        // SECCIÓN DE GLOSARIO (ICONOS CORREGIDOS)
+        // ============================================
+        const glossaryTerms = [
+            { term: "Apalancamiento (Leverage)", icon: "fas fa-hand-holding-dollar", description: "Es un 'préstamo' que te da tu bróker para que puedas abrir operaciones más grandes de lo que tu capital permite. Ejemplo: Con 10x de apalancamiento, $100 controlan una posición de $1,000. Magnifica ganancias y pérdidas." },
+            { term: "Stop Loss (SL)", icon: "fas fa-stop-circle", description: "Una orden esencial para limitar pérdidas. Cierra automáticamente tu posición para evitar que el precio se mueva más de lo que estás dispuesto a perder. Es el 'seguro' de tu operación." },
+            // ICONO CORREGIDO: Take Profit
+            { term: "Take Profit (TP)", icon: "fas fa-hand-holding-usd", description: "Una orden para asegurar una ganancia. Cierra automáticamente tu posición cuando el precio alcanza un objetivo predefinido." },
+            { term: "Trailing Stop", icon: "fas fa-location-crosshairs", description: "Un Stop Loss que se mueve automáticamente para seguir el precio a medida que este sube, protegiendo las ganancias acumuladas. Si el precio retrocede, el Stop se queda quieto en su último punto." },
+            { term: "Trigger Stop", icon: "fas fa-bullseye", description: "Una orden avanzada que activa otra orden (Market o Limit) solo cuando el precio alcanza un nivel específico. Se usa para entrar o salir con mayor precisión en condiciones específicas." },
+            // ICONO CORREGIDO: Drawdown
+            { term: "Drawdown", icon: "fas fa-arrow-trend-down", description: "La pérdida máxima que sufre una cuenta desde su punto más alto. Es la métrica clave para evaluar la salud de tu estrategia de riesgo." },
+            { term: "Ratio Riesgo/Recompensa (R/R)", icon: "fas fa-scale-balanced", description: "Compara lo que arriesgas (Stop Loss) contra lo que buscas ganar (Take Profit). Un R/R de 1:2 significa que arriesgas $10 para ganar $20." },
+            { term: "Volatilidad", icon: "fas fa-bolt", description: "Mide la rapidez y la intensidad con la que cambia el precio. Un activo muy volátil se mueve mucho en poco tiempo, ofreciendo mayores oportunidades y mayor riesgo." },
+            { term: "Liquidación (Liquidation)", icon: "fas fa-hand-point-down", description: "El cierre forzoso de tu posición apalancada por parte del bróker, porque las pérdidas han consumido todo el capital de garantía (margen)." },
+            { term: "Slippage (Deslizamiento)", icon: "fas fa-arrows-alt-h", description: "La diferencia entre el precio esperado de una orden y el precio real de ejecución. Ocurre en mercados rápidos o poco líquidos." },
+            { term: "Orden Limit (Límite)", icon: "fas fa-tag", description: "Permite especificar el precio exacto de compra o venta. No garantiza la ejecución, solo se activa si el precio toca ese nivel." },
+            { term: "Orden Market (A Mercado)", icon: "fas fa-share-square", description: "Cierra o abre una posición inmediatamente al mejor precio disponible. Garantiza la ejecución, pero no el precio exacto (puede haber Slippage)." },
+            { term: "Soporte", icon: "fas fa-arrow-down", description: "Un nivel de precio que actúa como un 'piso' donde la presión de compra históricamente ha sido lo suficientemente fuerte para detener o revertir la caída de precios." },
+            { term: "Resistencia", icon: "fas fa-arrow-up", description: "Un nivel de precio que actúa como un 'techo' donde la presión de venta históricamente ha sido fuerte para detener o revertir el aumento de precios." },
+            { term: "Price Action (Acción del Precio)", icon: "fas fa-chart-area", description: "Una técnica de trading que se enfoca solo en el estudio de velas, estructura y volumen, ignorando la mayoría de los indicadores." },
+            { term: "Vela Japonesa (Candlestick)", icon: "fas fa-chart-simple", description: "Representación gráfica del precio que muestra la apertura, cierre, máximo y mínimo de un activo en un periodo específico (ej. 1 hora)." },
+            { term: "Mecha (Wick/Shadow)", icon: "fas fa-grip-lines-vertical", description: "Las líneas delgadas que sobresalen del cuerpo de una vela. Indican el rango de precios extremo (máximo y mínimo) que se alcanzó en ese período." },
+            { term: "FOMO (Miedo a Perderse la Oportunidad)", icon: "fas fa-exclamation-triangle", description: "Sesgo psicológico que lleva a los traders a entrar impulsivamente en una operación (compra o venta) por miedo a que el precio se vaya sin ellos, a menudo comprando tarde en la cima." },
+            { term: "Análisis Técnico", icon: "fas fa-line-chart", description: "Estudio de los movimientos de precios pasados, patrones gráficos e indicadores para predecir movimientos futuros del mercado." },
+            { term: "Análisis Fundamental", icon: "fas fa-city", description: "Estudio de las noticias económicas, financieras y macro (como la inflación, empleo o informes de ganancias) que afectan el valor real de un activo." },
+            { term: "Order Block", icon: "fas fa-cube", description: "Una zona específica en el gráfico donde se cree que las grandes instituciones dejaron órdenes pendientes de compra o venta. El precio tiende a regresar a estas zonas para completarlas antes de continuar." },
+            { term: "Break of Structure (BOS)", icon: "fas fa-sitemap", description: "Ocurre cuando el precio rompe un máximo o mínimo anterior en una tendencia, indicando una continuación de la tendencia actual o un potencial cambio estructural." },
+            { term: "Change of Character (CHoCH)", icon: "fas fa-exchange-alt", description: "Un término de estructura que indica el primer signo de un cambio de tendencia (reversión) al romper un mínimo o máximo relevante." },
+            { term: "Media Móvil (MA/EMA)", icon: "fas fa-wave-square", description: "Una línea en el gráfico que suaviza el precio, mostrando la tendencia promedio a lo largo de un número de períodos (ej. 50, 200). La EMA es más rápida y sensible al precio actual." },
+            { term: "Sobrecompra/Sobreventa", icon: "fas fa-hand-point-up", description: "Condiciones identificadas por indicadores como el RSI o Estocástico. Sobrecompra sugiere que el precio subió demasiado rápido y puede caer. Sobreventa sugiere que cayó demasiado rápido y puede subir." },
+            { term: "Backtesting", icon: "fas fa-history", description: "El proceso de probar una estrategia usando datos de precios históricos para medir su rendimiento y rentabilidad en el pasado." },
+            { term: "Forecasting (Previsión)", icon: "fas fa-chart-bar", description: "El acto de predecir el futuro movimiento de precios basándose en el análisis de datos (técnico o fundamental)." },
+            { term: "Hedging (Cobertura)", icon: "fas fa-lock", description: "Una estrategia para reducir el riesgo de una posición. Implica abrir una posición opuesta o complementaria en un activo relacionado (ej. comprar Bitcoin y vender un futuro de Bitcoin)." },
+            { term: "Scalping", icon: "fas fa-tachometer-alt", description: "Un estilo de trading que busca obtener pequeñas ganancias en movimientos de precios muy rápidos, manteniendo las operaciones abiertas por segundos o minutos." },
+            { term: "Day Trading", icon: "fas fa-calendar-day", description: "Un estilo de trading donde todas las operaciones se abren y cierran dentro del mismo día de negociación, evitando dejar posiciones abiertas durante la noche." },
+            { term: "Swing Trading", icon: "fas fa-mountain", description: "Un estilo de trading donde las posiciones se mantienen abiertas por días o semanas para capturar movimientos de tendencia más grandes (swings)." },
+            // ICONO CORREGIDO: Mercado Bull
+            { term: "Mercado Bull (Toro)", icon: "fas fa-up-long", description: "Un mercado caracterizado por un aumento constante de precios, optimismo y fuertes compras (los precios suben)." },
+            // ICONO CORREGIDO: Mercado Bear
+            { term: "Mercado Bear (Oso)", icon: "fas fa-down-long", description: "Un mercado caracterizado por una caída constante de precios, pesimismo y fuertes ventas (los precios caen)." },
+            { term: "Volumen", icon: "fas fa-chart-area", description: "La cantidad total de un activo que se ha negociado en un período. Un alto volumen valida la fuerza de un movimiento de precio." },
+            { term: "Pullback (Retest)", icon: "fas fa-undo", description: "Un retroceso temporal del precio hacia un nivel de soporte o resistencia previamente roto, antes de reanudar el movimiento en la dirección de la tendencia principal." },
+            { term: "Correlación", icon: "fas fa-link", description: "La relación en cómo se mueven dos activos. Positiva (+1) si se mueven igual, negativa (-1) si se mueven en direcciones opuestas." },
+            { term: "Liquidez", icon: "fas fa-handshake", description: "Mide la facilidad con la que se puede comprar o vender un activo sin causar un gran cambio en su precio. Alta liquidez es buena para ejecutar órdenes grandes." },
+            { term: "Capital de Riesgo", icon: "fas fa-sack-dollar", description: "El dinero que un trader puede permitirse perder sin que afecte su vida financiera o sus obligaciones personales (alquiler, comida, etc.)." },
+            { term: "Funding Rate (Tasa de Financiamiento)", icon: "fas fa-percent", description: "Un pago periódico en contratos de futuros perpetuos. Asegura que el precio del futuro se mantenga cerca del precio al contado (spot). Los largos pagan a los cortos, o viceversa." },
+            { term: "Pump and Dump", icon: "fas fa-bomb", description: "Esquema de manipulación ilegal. Inflar artificialmente el precio (Pump) con propaganda, para luego vender las grandes cantidades (Dump) a los nuevos compradores, causando un colapso." },
+
+        ];
+
+
+        // Variables de estado
+        let questions = []; 
+        let currentQuestionIndex = 0;
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let currentMode = 'beginner'; 
+        let tradingBalance = 1000;
+        let livesRemaining = 40; 
+        let currentBet = 10;
+        let incorrectQuestions = [];
+
+        // Variables de tiempo (para modos con velocidad)
+        let timer = null;
+        const timePerQuestionLives = 20; 
+        const timePerQuestionTrading = 60; 
+        let timeElapsed = 0;
+        let isTimerEnabled = false; 
+
+        // Función de utilidad para barajar (shuffle) un array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        // ============================================
+        // FUNCIONES DE NAVEGACIÓN Y MODO
+        // ============================================
+        
+        function hideAllSections() {
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('betSetup').classList.add('hidden');
+            document.getElementById('quizContent').classList.add('hidden');
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('glossarySection').classList.add('hidden'); 
+            document.getElementById('reviewContainer').classList.add('hidden');
+        }
+
+        function goToMenu() {
+            hideAllSections();
+            document.getElementById('modeSelection').classList.remove('hidden');
+            
+            clearInterval(timer); // Asegurar que el temporizador se detiene
+            clearConfetti();
+            resetGame();
+        }
+        
+        function showGlossary() {
+            hideAllSections();
+            document.getElementById('glossarySection').classList.remove('hidden');
+            renderGlossary();
+            
+            // CORRECCIÓN: Desplazar la ventana al inicio de la lista de glosario
+            window.scrollTo(0, 0); 
+        }
+        
+        function renderGlossary() {
+            const glossaryList = document.getElementById('glossaryList');
+            glossaryList.innerHTML = '';
+            
+            // Ordenar alfabéticamente para mejor estética y organización
+            const sortedTerms = glossaryTerms.sort((a, b) => a.term.localeCompare(b.term));
+
+            sortedTerms.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'glossary-item';
+                // La descripción no incluye ahora los asteriscos **
+                itemDiv.innerHTML = `
+                    <h4><i class="${item.icon}"></i> ${item.term}</h4>
+                    <p>${item.description}</p>
+                `;
+                glossaryList.appendChild(itemDiv);
+            });
+        }
+
+
+        function selectMode(mode) {
+            currentMode = mode;
+            incorrectQuestions = []; 
+            
+            if (mode === 'trading') {
+                // Si es Modo Trader, la primera acción es ir al setup de apuesta
+                hideAllSections();
+                document.getElementById('betSetup').classList.remove('hidden');
+                updateTradingDisplay();
+            } else {
+                startQuiz();
+            }
+        }
+
+        function changeBet(amount) {
+            let newBet = currentBet + amount;
+            const maxBet = tradingBalance * 0.2; 
+
+            if (newBet >= 10 && newBet <= maxBet) {
+                currentBet = newBet;
+                document.getElementById('betAmount').value = currentBet;
+            } else if (newBet > maxBet) {
+                alert(`Apuesta máxima es el 20% de tu balance: $${maxBet.toFixed(0)}`);
+            }
+        }
+
+
+        function startQuiz() {
+            // Reiniciar y preparar la lista de 100 preguntas
+            questions = [...allQuestions]; 
+            shuffleArray(questions); 
+
+            resetGame(); // resetGame() no toca isTimerEnabled
+
+            // Configurar el botón del temporizador al inicio del quiz según el modo
+            const btn = document.getElementById('timerToggleBtn');
+            const timerBarContainer = document.getElementById('timerBarContainer');
+
+            if (currentMode === 'trading') {
+                // CORRECCIÓN: En Modo Trader, el temporizador es OBLIGATORIO y el botón se OCULTA
+                isTimerEnabled = true;
+                btn.classList.add('hidden'); 
+            } else if (currentMode === 'lives') {
+                // Modo con Vidas: sigue usando el toggle
+                btn.classList.remove('hidden'); 
+                 btn.innerHTML = isTimerEnabled ? '<i class="fas fa-clock"></i> Temporizador: ACTIVADO' : '<i class="fas fa-clock"></i> Temporizador: DESACTIVADO';
+                 btn.classList.toggle('timer-active', isTimerEnabled);
+                 btn.classList.toggle('timer-inactive', !isTimerEnabled);
+            } else {
+                // Modo Principiante
+                btn.classList.add('hidden'); 
+                clearInterval(timer);
+                timerBarContainer.classList.add('hidden');
+            }
+            
+            hideAllSections();
+            document.getElementById('quizContent').classList.remove('hidden');
+            
+            // Configurar la UI según el modo (Nombres corregidos)
+            document.getElementById('specialLabel').textContent = currentMode === 'lives' ? 'Vidas' : (currentMode === 'trading' ? 'Balance' : 'Score');
+            
+            loadQuestion();
+        }
+
+        function resetGame() {
+            currentQuestionIndex = 0;
+            correctCount = 0;
+            incorrectCount = 0;
+            tradingBalance = 1000;
+            livesRemaining = 40; 
+            incorrectQuestions = [];
+            clearInterval(timer);
+        }
+        
+        // ============================================
+        // FUNCIÓN DE TOGGLE DEL TEMPORIZADOR
+        // ============================================
+
+        function toggleTimer() {
+            if (currentMode === 'trading') return; // Bloquear si es Modo Trader (Es obligatorio)
+            
+            isTimerEnabled = !isTimerEnabled;
+            const btn = document.getElementById('timerToggleBtn');
+            
+            btn.classList.toggle('timer-active', isTimerEnabled);
+            btn.classList.toggle('timer-inactive', !isTimerEnabled);
+            
+            if (isTimerEnabled) {
+                btn.innerHTML = '<i class="fas fa-clock"></i> Temporizador: ACTIVADO';
+            } else {
+                btn.innerHTML = '<i class="fas fa-clock"></i> Temporizador: DESACTIVADO';
+            }
+            
+            // Si el quiz está activo y es un modo que usa tiempo, recargar la pregunta para aplicar el cambio
+            if (!document.getElementById('quizContent').classList.contains('hidden') && (currentMode === 'lives' || currentMode === 'trading')) {
+                clearInterval(timer);
+                document.getElementById('timerBarContainer').classList.add('hidden');
+                loadQuestion(); // Esto reinicia la pregunta con la nueva configuración
+            }
+        }
+
+
+        // ============================================
+        // FUNCIONES DE QUIZ
+        // ============================================
+        
+        function loadQuestion() {
+            // Verificar fin del juego por límite de preguntas
+            if (currentQuestionIndex >= questions.length) {
+                showResults();
+                return;
+            }
+
+            // Verificar condiciones de finalización según modo
+            if (currentMode === 'lives' && livesRemaining <= 0) {
+                showResults();
+                return;
+            }
+
+            if (currentMode === 'trading' && tradingBalance <= 0) {
+                showResults();
+                return;
+            }
+
+            // Resetear UI
+            document.getElementById('feedback').classList.add('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+            const answerButtons = document.querySelectorAll('.answer-btn');
+            answerButtons.forEach(btn => {
+                btn.disabled = false;
+                btn.classList.remove('correct', 'incorrect');
+            });
+
+            // Cargar pregunta
+            const question = questions[currentQuestionIndex];
+            document.getElementById('questionNumber').textContent = `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`;
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('currentQuestion').textContent = `${currentQuestionIndex + 1}/${questions.length}`;
+            updateProgress();
+            updateSpecialStat();
+
+            // Determinar el tiempo por pregunta
+            const questionTime = currentMode === 'trading' ? timePerQuestionTrading : timePerQuestionLives;
+            
+            // Iniciar Timer solo si es un modo que usa tiempo Y si el timer está activado (automático en trading)
+            const shouldStartTimer = isTimerEnabled && (currentMode === 'lives' || currentMode === 'trading');
+            
+            if (shouldStartTimer) {
+                document.getElementById('timerBarContainer').classList.remove('hidden');
+                startTimer(questionTime);
+            } else {
+                 // Asegurar que el temporizador está detenido y oculto si no se usa
+                 clearInterval(timer); 
+                 document.getElementById('timerBarContainer').classList.add('hidden');
+            }
+        }
+
+        function checkAnswer(selectedAnswer) {
+            // Detener el tiempo solo si estaba activo
+            if (isTimerEnabled && (currentMode === 'lives' || currentMode === 'trading')) {
+                clearInterval(timer); 
+            }
+            
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedAnswer === question.answer;
+            const feedbackElement = document.getElementById('feedback');
+            
+            // Eliminamos asteriscos que pudieran venir de la explicación (aunque ya limpiamos en la fuente)
+            const cleanedExplanation = question.explanation.replace(/\*/g, '').replace(/_/g, ''); 
+            
+            const explanationHTML = `
+                <h4>Explicación Detallada:</h4>
+                <p>${cleanedExplanation}</p>
+            `;
+
+            // 1. Manejar el conteo y la lógica del modo
+            if (isCorrect) {
+                correctCount++;
+                feedbackElement.className = 'feedback correct';
+                
+                // Lógica de Modos
+                if (currentMode === 'trading') {
+                    // Bono del 5% por respuesta rápida (solo si el timer estaba activo)
+                    const bonus = isTimerEnabled && timeElapsed < (timePerQuestionTrading * 0.4) ? currentBet * 0.05 : 0; // Usa timePerQuestionTrading
+                    const gain = currentBet + bonus;
+                    tradingBalance += gain;
+                    feedbackElement.innerHTML = `
+                        <i class="fas fa-check-circle"></i> ¡Correcto! Ganaste $${gain.toFixed(2)} (${bonus > 0 ? '<strong>+Bono rápido</strong>' : ''}).
+                        ${explanationHTML}
+                    `;
+                    updateTradingDisplay();
+                } else {
+                     feedbackElement.innerHTML = `
+                        <i class="fas fa-check-circle"></i> ¡Correcto!
+                        ${explanationHTML}
+                    `;
+                }
+
+            } else {
+                incorrectCount++;
+                feedbackElement.className = 'feedback incorrect';
+                
+                // Lógica de Modos
+                if (currentMode === 'lives') {
+                    livesRemaining--;
+                } else if (currentMode === 'trading') {
+                    tradingBalance -= currentBet;
+                    
+                }
+                
+                // Agregar pregunta incorrecta al listado de repaso
+                incorrectQuestions.push({ 
+                    question: question.question, 
+                    answer: question.answer, 
+                    explanation: cleanedExplanation, 
+                    userAnswer: selectedAnswer 
+                });
+                
+                feedbackElement.innerHTML = `
+                    <i class="fas fa-times-circle"></i> ¡Incorrecto! La respuesta correcta era <strong>${question.answer ? 'VERDADERO' : 'FALSO'}</strong>. ${currentMode === 'trading' ? `Perdiste $${currentBet.toFixed(2)}. Balance actual: $${tradingBalance.toFixed(2)}.` : ''}
+                    ${explanationHTML}
+                `;
+                updateTradingDisplay(); // Llamado para actualizar balance y apuesta máxima
+            }
+
+            // 2. Actualizar UI
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('incorrectCount').textContent = incorrectCount;
+            feedbackElement.classList.remove('hidden');
+            document.getElementById('nextBtn').classList.remove('hidden');
+            updateSpecialStat();
+
+            // 3. Desactivar botones
+            const answerButtons = document.querySelectorAll('.answer-btn');
+            answerButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.dataset.answer === String(question.answer)) {
+                    btn.classList.add('correct');
+                } else if (btn.dataset.answer === String(selectedAnswer) && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // 4. Verificar fin de juego forzado (vidas/balance)
+            const isGameOver = (currentMode === 'lives' && livesRemaining <= 0) || (currentMode === 'trading' && tradingBalance <= 0);
+            
+            if (isGameOver || currentQuestionIndex >= questions.length - 1) {
+                 document.getElementById('nextBtn').textContent = "Ver Resultados →";
+            } else {
+                 document.getElementById('nextBtn').textContent = "Siguiente Pregunta →";
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        // ============================================
+        // FUNCIONES DE ESTADO Y PROGRESO
+        // ============================================
+
+        function updateProgress() {
+            const progress = (currentQuestionIndex / questions.length) * 100;
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = `${progress}%`;
+            progressFill.textContent = `${Math.round(progress)}%`;
+        }
+        
+        function updateTradingDisplay() {
+            document.getElementById('tradingBalanceDisplay').textContent = `Balance actual: $${tradingBalance.toFixed(2)}`;
+            
+            // Actualizar la apuesta máxima
+            const maxBet = tradingBalance * 0.2;
+            document.querySelector('.bet-input-container p').innerHTML = `Mínimo: $10 | Múltiplos de $10. La apuesta máxima es el 20% de tu balance total (<strong>$${maxBet.toFixed(0)}</strong>).`;
+
+             if (currentBet > maxBet) {
+                currentBet = 10;
+                document.getElementById('betAmount').value = 10;
+            }
+        }
+
+        function updateSpecialStat() {
+            const specialValueElement = document.getElementById('specialValue');
+            if (currentMode === 'lives') {
+                specialValueElement.textContent = livesRemaining;
+                specialValueElement.style.color = livesRemaining < 10 ? '#ff0044' : '#ffd700'; // Ajustado para 40 vidas
+            } else if (currentMode === 'trading') {
+                specialValueElement.textContent = `$${tradingBalance.toFixed(2)}`;
+                specialValueElement.style.color = tradingBalance < 1000 ? '#ff0044' : '#00ff88';
+            } else {
+                specialValueElement.textContent = correctCount;
+                specialValueElement.style.color = '#00ff88';
+            }
+        }
+
+        // ============================================
+        // FUNCIONES DE TEMPORIZADOR (BARRA DE PROGRESO)
+        // ============================================
+
+        function startTimer(duration) { // Acepta la duración (20s o 60s)
+            timeElapsed = 0;
+            const timerBar = document.getElementById('timerBar');
+            timerBar.style.width = '100%'; // Inicia la barra llena
+
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeElapsed++;
+                const timeLeft = duration - timeElapsed; // Usa la duración específica del modo
+                const widthPercent = (timeLeft / duration) * 100; // Usa la duración específica del modo
+                timerBar.style.width = `${widthPercent}%`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+
+        function handleTimeout() {
+            const question = questions[currentQuestionIndex];
+            const feedbackElement = document.getElementById('feedback');
+            
+            // Forzar respuesta incorrecta por tiempo
+            incorrectCount++;
+            
+            const cleanedExplanation = question.explanation.replace(/\*/g, '').replace(/_/g, ''); 
+            
+            // Agregar pregunta incorrecta
+            incorrectQuestions.push({ 
+                question: question.question, 
+                answer: question.answer, 
+                explanation: cleanedExplanation, 
+                userAnswer: 'Tiempo Agotado' 
+            });
+
+            feedbackElement.className = 'feedback incorrect';
+            
+            // Lógica de Modos por timeout
+            if (currentMode === 'lives') {
+                livesRemaining--;
+            } else if (currentMode === 'trading') {
+                tradingBalance -= currentBet;
+                updateTradingDisplay();
+            }
+            
+            // Mensaje de Timeout
+            feedbackElement.innerHTML = `
+                <i class="fas fa-clock"></i> <strong>¡Tiempo Agotado!</strong> La respuesta correcta era <strong>${question.answer ? 'VERDADERO' : 'FALSO'}</strong>. ${currentMode === 'trading' ? `Perdiste $${currentBet.toFixed(2)}. Balance actual: $${tradingBalance.toFixed(2)}.` : ''}
+                <h4>Explicación Detallada:</h4>
+                <p>${cleanedExplanation}</p>
+            `;
+            
+            // Actualizar UI y pasar a la siguiente pregunta
+            document.getElementById('incorrectCount').textContent = incorrectCount;
+            document.querySelectorAll('.answer-btn').forEach(btn => btn.disabled = true);
+            feedbackElement.classList.remove('hidden');
+            document.getElementById('nextBtn').classList.remove('hidden');
+            updateSpecialStat();
+            
+            const isGameOver = (currentMode === 'lives' && livesRemaining <= 0) || (currentMode === 'trading' && tradingBalance <= 0);
+
+            if (isGameOver || currentQuestionIndex >= questions.length - 1) {
+                 document.getElementById('nextBtn').textContent = "Ver Resultados →";
+            } else {
+                 document.getElementById('nextBtn').textContent = "Siguiente Pregunta →";
+            }
+        }
+
+        // ============================================
+        // FUNCIONES DE RESULTADOS Y REPASO
+        // ============================================
+
+        function showResults() {
+            clearInterval(timer);
+            document.getElementById('quizContent').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('timerBarContainer').classList.add('hidden');
+
+            const totalQuestions = questions.length;
+            const percentage = Math.round((correctCount / totalQuestions) * 100);
+
+            document.getElementById('finalCorrect').textContent = correctCount;
+            document.getElementById('finalIncorrect').textContent = incorrectCount;
+            document.getElementById('finalAccuracy').textContent = `${percentage}%`;
+            document.getElementById('finalScore').textContent = `${percentage}%`;
+
+            const scoreCircle = document.getElementById('scoreCircle');
+            const resultMessage = document.getElementById('resultMessage');
+            const finalTitle = document.getElementById('finalTitle');
+            const finalRank = document.getElementById('finalRank');
+
+            scoreCircle.classList.remove('pass', 'fail');
+
+            // Lógica de Aprobación por Modo
+            if (currentMode === 'beginner' && percentage >= 60) {
+                scoreCircle.classList.add('pass');
+                finalTitle.innerHTML = '¡Felicidades, Aprobado! <i class="fas fa-trophy"></i>';
+                resultMessage.textContent = `Tu precisión del ${percentage}% es excelente. ¡Estás listo para el nivel de Gestión de Riesgo!`;
+                launchConfetti();
+            } else if (currentMode === 'lives' && livesRemaining > 0) {
+                 scoreCircle.classList.add('pass');
+                 finalTitle.innerHTML = '¡Superviviente del Mercado! <i class="fas fa-heart-pulse"></i>';
+                 resultMessage.textContent = `Terminaste con ${livesRemaining} vidas y ${percentage}% de precisión. ¡Excelente gestión de riesgo!`;
+                 launchConfetti();
+            } else if (currentMode === 'trading' && tradingBalance > 1000) {
+                scoreCircle.classList.add('pass');
+                finalTitle.innerHTML = '¡Ganador de Capital! <i class="fas fa-dollar-sign"></i>';
+                resultMessage.textContent = `Tu balance final fue de $${tradingBalance.toFixed(2)}. ¡Tu estrategia generó una ganancia de $${(tradingBalance - 1000).toFixed(2)}!`;
+                launchConfetti();
+            } else {
+                scoreCircle.classList.add('fail');
+                finalTitle.innerHTML = '¡Debes Repasar! <i class="fas fa-exclamation-triangle"></i>';
+                resultMessage.textContent = `Necesitas reforzar tus bases. El Trading es paciencia y conocimiento. ¡Revisa tus errores y vuelve a intentarlo!`;
+            }
+
+            // Manejo del Rank
+            if (percentage >= 90) finalRank.textContent = "RANGO: Trader Élite";
+            else if (percentage >= 75) finalRank.textContent = "RANGO: Trader Intermedio Superior";
+            else if (percentage >= 60) finalRank.textContent = "RANGO: Trader Básico";
+            else finalRank.textContent = "RANGO: Aprendiz";
+
+            // Mostrar botón de revisión si hay errores
+            const reviewBtn = document.getElementById('reviewBtn');
+            reviewBtn.textContent = `Revisar Errores (${incorrectQuestions.length})`;
+            if (incorrectQuestions.length > 0) {
+                reviewBtn.classList.remove('hidden');
+            } else {
+                reviewBtn.classList.add('hidden');
+            }
+        }
+        
+        function toggleReview() {
+            const container = document.getElementById('reviewContainer');
+            const btn = document.getElementById('reviewBtn');
+            const isHidden = container.classList.contains('hidden');
+            
+            if (isHidden) {
+                renderReview();
+                container.classList.remove('hidden');
+                btn.innerHTML = `<i class="fas fa-eye"></i> Ocultar Repaso (${incorrectQuestions.length})`;
+            } else {
+                container.classList.add('hidden');
+                btn.innerHTML = `<i class="fas fa-eye-slash"></i> Revisar Errores (${incorrectQuestions.length})`;
+            }
+        }
+
+        function renderReview() {
+            const container = document.getElementById('reviewContainer');
+            container.innerHTML = `<h3><i class="fas fa-exclamation-triangle"></i> Repaso de Conceptos Fallidos</h3>`;
+            
+            incorrectQuestions.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'review-item';
+                itemDiv.innerHTML = `
+                    <div class="review-question-text">
+                        <strong>${index + 1}. ${item.question}</strong>
+                    </div>
+                    <div class="review-explanation">
+                        <p><strong>Tu Respuesta:</strong> ${item.userAnswer === true ? 'VERDADERO' : (item.userAnswer === false ? 'FALSO' : item.userAnswer)}</p>
+                        <p><strong>Respuesta Correcta:</strong> ${item.answer ? 'VERDADERO' : 'FALSO'}</p>
+                        <p class="mt-2">${item.explanation}</p>
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+        
+        function restartQuiz() {
+            goToMenu();
+        }
+        
+        // ============================================
+        // FUNCIÓN DE CONFETI (Estética)
+        // ============================================
+        
+        function launchConfetti() {
+            const container = document.getElementById('confettiContainer');
+            const colors = ['#00ff88', '#00d4ff', '#ffd700', '#ff0044', '#ffffff'];
+            const numConfetti = 50;
+
+            clearConfetti(); 
+            // Esto solo es para la animación visual, no tiene impacto en la funcionalidad
+            const style = document.createElement('style');
+            style.id = 'confetti-styles';
+            style.textContent = `
+                .confetti-container {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    pointer-events: none;
+                    z-index: 1000;
+                    overflow: hidden;
+                }
+                .confetti {
+                    position: absolute;
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    transform-origin: 50% 50%;
+                    animation: fall ${Math.random() * 3 + 2}s ease-in forwards;
+                    opacity: 0;
+                }
+                @keyframes fall {
+                    0% {
+                        transform: translateY(0) rotateZ(0deg) scale(1);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translateY(100vh) rotateZ(${Math.random() > 0.5 ? 1000 : -1000}deg) scale(0.5);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+
+            for (let i = 0; i < numConfetti; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = `${-Math.random() * 50}px`; 
+                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+                confetti.style.width = `${Math.random() * 8 + 5}px`;
+                confetti.style.height = `${Math.random() * 8 + 5}px`;
+                confetti.style.opacity = 1;
+
+                container.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        function clearConfetti() {
+             const container = document.getElementById('confettiContainer');
+             container.innerHTML = '';
+             const style = document.getElementById('confetti-styles');
+             if (style) style.remove();
+        }
+
+        // Inicializar al cargar la página
+        window.onload = function() {
+            goToMenu();
+        };
+
+    </script>
+</body>
+</html>
